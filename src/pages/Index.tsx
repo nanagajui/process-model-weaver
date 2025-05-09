@@ -1,7 +1,7 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
-import ApiKeyInput from '@/components/ApiKeyInput';
 import TextInput from '@/components/TextInput';
 import BpmnViewer from '@/components/BpmnViewer';
 import XmlViewer from '@/components/XmlViewer';
@@ -9,19 +9,26 @@ import EnhancedResult from '@/components/EnhancedResult';
 import { enhanceText, generateBPMN, hasApiKey } from '@/services/openai';
 import { validateBPMNXml } from '@/services/bpmnUtils';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { Settings } from 'lucide-react';
 
 const Index = () => {
-  const [showApiKey, setShowApiKey] = useState(!hasApiKey());
   const [loading, setLoading] = useState(false);
   const [originalText, setOriginalText] = useState('');
   const [enhancedText, setEnhancedText] = useState('');
   const [bpmnXml, setBpmnXml] = useState('');
   const [showEnhanced, setShowEnhanced] = useState(false);
 
+  useEffect(() => {
+    // Check if API key exists
+    if (!hasApiKey()) {
+      toast.info('Please set your OpenAI API key in the settings to use this application');
+    }
+  }, []);
+
   const handleGenerateBPMN = async (text: string, enhance: boolean) => {
     if (!hasApiKey()) {
       toast.error('Please set your OpenAI API key first');
-      setShowApiKey(true);
       return;
     }
 
@@ -60,19 +67,31 @@ const Index = () => {
     }
   };
 
+  const handleXmlUpdate = (updatedXml: string) => {
+    if (validateBPMNXml(updatedXml)) {
+      setBpmnXml(updatedXml);
+      toast.success('BPMN diagram updated successfully!');
+    } else {
+      toast.error('Invalid BPMN XML. Please check your changes.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background animate-fade-in">
       <div className="container py-8">
-        <Header onShowApiKey={() => setShowApiKey(true)} />
-        
-        {showApiKey && (
-          <ApiKeyInput />
-        )}
+        <div className="flex justify-between items-center mb-6">
+          <Header />
+          <Link to="/settings">
+            <Button variant="outline" size="sm">
+              <Settings className="h-4 w-4 mr-2" /> API Key Settings
+            </Button>
+          </Link>
+        </div>
         
         <div className="grid grid-cols-1 gap-6">
           <TextInput 
             onSubmit={handleGenerateBPMN}
-            disabled={!hasApiKey() && !showApiKey}
+            disabled={!hasApiKey()}
             loading={loading}
           />
           
@@ -86,7 +105,7 @@ const Index = () => {
           {bpmnXml && (
             <>
               <BpmnViewer bpmnXml={bpmnXml} />
-              <XmlViewer xml={bpmnXml} />
+              <XmlViewer xml={bpmnXml} onUpdate={handleXmlUpdate} />
             </>
           )}
         </div>

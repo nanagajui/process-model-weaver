@@ -4,7 +4,8 @@ import OpenAI from 'openai';
 // In a real application, this would be securely stored and not hardcoded
 const DEFAULT_API_KEY = ''; // Empty string as placeholder
 
-let apiKey = DEFAULT_API_KEY;
+// Initialize apiKey from localStorage if available
+let apiKey = localStorage.getItem('openai_api_key') || DEFAULT_API_KEY;
 
 export const setApiKey = (key: string) => {
   apiKey = key;
@@ -36,7 +37,7 @@ export const enhanceText = async (text: string): Promise<string> => {
       messages: [
         {
           role: 'system',
-          content: 'You are a business analyst. Improve and clarify the user\'s description of a business process to ensure it\'s precise and complete for a machine to model.'
+          content: 'You are a business analyst. Improve and clarify the user\'s description of a business process to ensure it\'s precise and complete for a machine to model. Also provide 2-3 additional suggestions for steps or considerations that might have been missed, clearly labeled as "SUGGESTIONS:" in a separate paragraph.'
         },
         { role: 'user', content: text }
       ],
