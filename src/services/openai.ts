@@ -30,14 +30,14 @@ export const enhanceText = async (text: string): Promise<string> => {
   if (!text.trim()) return '';
   
   const openai = createOpenAIClient();
-  
+  // Can use gpt-4o-mini for this task
   try {
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
-          content: 'You are a business analyst. Improve and clarify the user\'s description of a business process to ensure it\'s precise and complete for a machine to model. Also provide 2-3 additional suggestions for steps or considerations that might have been missed, clearly labeled as "SUGGESTIONS:" in a separate paragraph.'
+          content: 'You are a business analyst. Improve and clarify the user\'s description of a business process to ensure it\'s precise and complete for a machine to model as a BPMN diagram. Consider naming standards to ensure the BPMN diagram can be made from this description alone.'
         },
         { role: 'user', content: text }
       ],
@@ -56,14 +56,14 @@ export const generateBPMN = async (text: string): Promise<string> => {
   if (!text.trim()) return '';
 
   const openai = createOpenAIClient();
-  
+  // Must use gpt-4o for this task mini will not work
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: 'gpt-4o',
       messages: [
         {
           role: 'system',
-          content: 'You are an expert in business process modeling. Convert the following business process into BPMN 2.0 XML format. Include only the raw XML. Do not include explanations or code fences.'
+          content: 'You are an expert in business process modeling. Convert the following business process into BPMN 2.0 XML format. Include only the raw XML. Please include in your response complete process definition with all elements and sequence flows. Complete BPMNDiagram section with, BPMNShape elements for all process nodes with clear coordinates, BPMNEdge elements for all connections with precise waypoints matching the flow described above. Ensure all edges have proper waypoints that create a clean, logical flow. Do not include explanations or code fences.'
         },
         { role: 'user', content: text }
       ],
