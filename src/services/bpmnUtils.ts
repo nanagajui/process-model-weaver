@@ -18,7 +18,10 @@ export const downloadSVG = (svgElement: SVGElement | null, filename: string = 'p
   
   // Set proper dimensions if not already set
   if (!svgClone.hasAttribute('width') || !svgClone.hasAttribute('height')) {
-    const bbox = svgElement.getBBox();
+    // TypeScript doesn't recognize getBBox on SVGElement directly, so we need to cast it
+    // to SVGGraphicsElement which does have this method
+    const svgGraphicsElement = svgElement as unknown as SVGGraphicsElement;
+    const bbox = svgGraphicsElement.getBBox();
     svgClone.setAttribute('width', bbox.width.toString());
     svgClone.setAttribute('height', bbox.height.toString());
     svgClone.setAttribute('viewBox', `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
