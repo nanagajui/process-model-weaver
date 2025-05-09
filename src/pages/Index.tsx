@@ -80,7 +80,7 @@ const Index = () => {
     <div className="min-h-screen bg-background animate-fade-in">
       <div className="container py-8">
         <div className="flex justify-between items-center mb-6">
-          <Header />
+          <Header onShowApiKey={() => {}} />
           <Link to="/settings">
             <Button variant="outline" size="sm">
               <Settings className="h-4 w-4 mr-2" /> API Key Settings
@@ -105,7 +105,7 @@ const Index = () => {
           {bpmnXml && (
             <>
               <BpmnViewer bpmnXml={bpmnXml} />
-              <XmlViewer xml={bpmnXml} onUpdate={handleXmlUpdate} />
+              <XmlViewer xml={bpmnXml} />
             </>
           )}
         </div>
