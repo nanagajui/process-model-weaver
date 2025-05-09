@@ -1,13 +1,23 @@
 
-import { saveAs } from 'file-saver';
+// File download functions temporarily disabled
+// import { saveAs } from 'file-saver';
 
 export const downloadBPMN = (bpmnXml: string, filename: string = 'process') => {
+  console.log('BPMN download requested - functionality temporarily disabled');
+  console.log('Content would have been saved as:', filename + '.bpmn');
+  // Temporary solution: create a data URL that can be opened in a new tab
   const blob = new Blob([bpmnXml], { type: 'application/xml' });
-  saveAs(blob, `${filename}.bpmn`);
+  const dataUrl = URL.createObjectURL(blob);
+  window.open(dataUrl, '_blank');
+  // Previous implementation using file-saver:
+  // const blob = new Blob([bpmnXml], { type: 'application/xml' });
+  // saveAs(blob, `${filename}.bpmn`);
 };
 
 export const downloadSVG = (svgElement: SVGElement | null, filename: string = 'process') => {
   if (!svgElement) return;
+  console.log('SVG download requested - functionality temporarily disabled');
+  console.log('Content would have been saved as:', filename + '.svg');
 
   // Clone the SVG to avoid modifying the displayed one
   const svgClone = svgElement.cloneNode(true) as SVGElement;
@@ -31,9 +41,14 @@ export const downloadSVG = (svgElement: SVGElement | null, filename: string = 'p
   const serializer = new XMLSerializer();
   const svgString = serializer.serializeToString(svgClone);
   
-  // Create a blob and download
+  // Temporary solution: create a data URL that can be opened in a new tab
   const blob = new Blob([svgString], { type: 'image/svg+xml' });
-  saveAs(blob, `${filename}.svg`);
+  const dataUrl = URL.createObjectURL(blob);
+  window.open(dataUrl, '_blank');
+  
+  // Previous implementation using file-saver:
+  // const blob = new Blob([svgString], { type: 'image/svg+xml' });
+  // saveAs(blob, `${filename}.svg`);
 };
 
 export const validateBPMNXml = (xml: string): boolean => {

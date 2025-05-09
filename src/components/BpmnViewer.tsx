@@ -77,7 +77,7 @@ const BpmnViewer = ({ bpmnXml }: BpmnViewerProps) => {
 
   const handleDownloadBPMN = () => {
     downloadBPMN(bpmnXml);
-    toast.success('BPMN file downloaded');
+    toast.info('BPMN file preview opened in a new tab (download functionality temporarily disabled)');
   };
 
   const handleDownloadSVG = () => {
@@ -86,7 +86,7 @@ const BpmnViewer = ({ bpmnXml }: BpmnViewerProps) => {
     // Find the SVG element within the container
     const svgElement = containerRef.current.querySelector('svg');
     downloadSVG(svgElement as SVGElement);
-    toast.success('SVG file downloaded');
+    toast.info('SVG file preview opened in a new tab (download functionality temporarily disabled)');
   };
 
   return (
@@ -103,10 +103,10 @@ const BpmnViewer = ({ bpmnXml }: BpmnViewerProps) => {
           </div>
           <div className="space-x-2">
             <Button variant="outline" size="sm" onClick={handleDownloadBPMN}>
-              <Download className="h-4 w-4 mr-1" /> Download BPMN
+              <Download className="h-4 w-4 mr-1" /> Preview BPMN
             </Button>
             <Button variant="outline" size="sm" onClick={handleDownloadSVG}>
-              <Download className="h-4 w-4 mr-1" /> Download SVG
+              <Download className="h-4 w-4 mr-1" /> Preview SVG
             </Button>
           </div>
         </div>

@@ -17,7 +17,7 @@ const XmlViewer = ({ xml }: XmlViewerProps) => {
 
   const handleDownload = () => {
     downloadBPMN(xml);
-    toast.success('BPMN file downloaded');
+    toast.info('BPMN file preview opened in a new tab (download functionality temporarily disabled)');
   };
 
   if (!xml) return null;
@@ -31,7 +31,7 @@ const XmlViewer = ({ xml }: XmlViewerProps) => {
             {showXml ? 'Hide XML' : 'Show XML'}
           </Button>
           <Button variant="outline" size="sm" onClick={handleDownload}>
-            <Download className="h-4 w-4 mr-1" /> Download
+            <Download className="h-4 w-4 mr-1" /> Preview
           </Button>
         </div>
       </CardHeader>
